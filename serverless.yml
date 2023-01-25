@@ -1,0 +1,67 @@
+
+service: devlop
+custom:
+  settings:
+    DB_URL : "mongodb+srv://mudasir:Pass123@cluster0.tet8x.mongodb.net/CRUDDB?retryWrites=true&w=majority"
+
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  environment: ${self:custom.settings}
+
+
+functions:
+  createPost:
+    handler: handler.createPost
+    events:
+    - http:
+        path: /post
+        method: post
+  getAllPosts:
+    handler: handler.getAllPosts
+    events:
+    - http:
+        path: /posts
+        method: get
+  # getPosts:
+  #   handler: handler.getPosts
+  #   events:
+  #   - http:
+  #       path: /posts/{number}
+  #       method: get
+  # getPost:
+  #   handler: handler.getPost
+  #   events:
+  #   - http:
+  #       path: /post/{id}
+  #       method: get
+  updatePost:
+    handler: handler.updatePost
+    events:
+    - http:
+        path: /post/update
+        method: post
+  deletePost:
+    handler: handler.deletePost
+    events:
+    - http:
+        path: /post
+        method: delete
+
+# resources:
+#   Resources:
+#     PostsTable:
+#       Type: AWS::DynamoDB::Table
+#       Properties:
+#         AttributeDefinitions:
+#         - AttributeName: "id"
+#           AttributeType: "S"
+#         KeySchema:
+#         - AttributeName: "id"
+#           KeyType: "HASH"
+#         ProvisionedThroughput:
+#           ReadCapacityUnits: 1
+#           WriteCapacityUnits: 1
+#         TableName: ${self:custom.settings.POSTS_TABLE}
